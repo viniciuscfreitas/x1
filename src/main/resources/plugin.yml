@@ -1,0 +1,35 @@
+name: PrimeLeagueX1
+main: br.com.primeleague.x1.Main
+version: 1.0.0
+author: PrimeLeague
+description: Plugin de duelos 1v1 para servidores Bukkit
+softdepend: [Vault]
+
+commands:
+  x1:
+    description: Comando principal do plugin de duelos
+    usage: /x1
+    aliases: [duelo, duel, 1v1]
+    
+permissions:
+  primeleaguex1.use:
+    description: Permite usar o plugin de duelos
+    default: true
+  
+  primeleaguex1.admin:
+    description: Permite usar comandos administrativos
+    default: op
+    children:
+      primeleaguex1.use: true
+      
+  primeleaguex1.arena.set:
+    description: Permite configurar a arena
+    default: op
+    
+  primeleaguex1.stats.others:
+    description: Permite ver estatísticas de outros jogadores
+    default: op
+    
+  primeleaguex1.free:
+    description: Permite duelar sem custos
+    default: op 

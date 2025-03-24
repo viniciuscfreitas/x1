@@ -1,0 +1,158 @@
+# Configuração do PrimeLeagueX1
+# Plugin de duelos (X1, 2v2, 3v3) para servidor Prime League
+
+# Configurações gerais
+configuracoes:
+  # Tempo de contagem regressiva para iniciar duelo (segundos)
+  contagem-regressiva: 3
+  
+  # Tempo máximo de duelo (segundos)
+  tempo-maximo-duelo: 300
+  
+  # Tempo para confirmar um desafio (segundos)
+  tempo-confirmacao: 30
+  
+  # Ativar kits de duelo
+  usar-kit: true
+  
+  # Usar sistema de Elo
+  usar-elo: true
+  
+  # Ativar sistema de apostas
+  usar-apostas: true
+  
+  # Quantidade de jogadores mostrados no ranking
+  quantidade-top-jogadores: 10
+  
+  # Distância máxima para duelo local (blocos)
+  distancia-maxima-duelo-local: 10
+  
+  # Verificar se o inventário está vazio antes de dar kit
+  checar-inventario-vazio: true
+
+# Configurações de arena
+arena:
+  # Posição 1 da arena (configurar via comando /x1 admin setpos1)
+  pos1:
+    world: "world"
+    x: 0
+    y: 64
+    z: 0
+  
+  # Posição 2 da arena (configurar via comando /x1 admin setpos2)
+  pos2:
+    world: "world"
+    x: 0
+    y: 64
+    z: 0
+    
+  # Posição do local de espectadores (configurar via comando /x1 admin setspectator)
+  espectador:
+    world: "world"
+    x: 0
+    y: 70
+    z: 0
+
+# Configurações de sons
+sons:
+  # Som ao iniciar duelo
+  iniciar-duelo: "NOTE_PLING"
+  
+  # Som ao vencer duelo
+  vitoria: "LEVEL_UP"
+  
+  # Som ao perder duelo
+  derrota: "ANVIL_LAND"
+  
+  # Som ao empatar duelo
+  empate: "NOTE_BASS"
+  
+  # Som ao enviar desafio
+  desafio-enviado: "ORB_PICKUP"
+  
+  # Som ao receber desafio
+  desafio-recebido: "NOTE_BASS_GUITAR"
+
+# Configurações do sistema de apostas
+apostas:
+  # Valores pré-definidos mostrados no menu
+  valores-predefinidos:
+    - 100
+    - 500
+    - 1000
+    - 5000
+    - 10000
+    - 50000
+
+# Kit de duelo (itens fornecidos ao jogador)
+kit:
+  # Equipamentos
+  armor:
+    helmet:
+      material: "DIAMOND_HELMET"
+      enchantments:
+        PROTECTION_ENVIRONMENTAL: 4
+        DURABILITY: 3
+      name: "&bCapacete de Duelo"
+    
+    chestplate:
+      material: "DIAMOND_CHESTPLATE"
+      enchantments:
+        PROTECTION_ENVIRONMENTAL: 4
+        DURABILITY: 3
+      name: "&bPeitoral de Duelo"
+    
+    leggings:
+      material: "DIAMOND_LEGGINGS"
+      enchantments:
+        PROTECTION_ENVIRONMENTAL: 4
+        DURABILITY: 3
+      name: "&bCalças de Duelo"
+    
+    boots:
+      material: "DIAMOND_BOOTS"
+      enchantments:
+        PROTECTION_ENVIRONMENTAL: 4
+        DURABILITY: 3
+      name: "&bBotas de Duelo"
+  
+  # Itens
+  items:
+    espada:
+      material: "DIAMOND_SWORD"
+      amount: 1
+      slot: 0
+      name: "&cEspada do Duelo"
+      enchantments:
+        DAMAGE_ALL: 5
+        FIRE_ASPECT: 2
+        DURABILITY: 3
+    
+    macas:
+      material: "GOLDEN_APPLE"
+      data: 1
+      amount: 64
+      slot: 1
+      name: "&6Maçãs Douradas"
+    
+    pocao_forca:
+      material: "POTION"
+      data: 8233
+      amount: 1
+      slot: 2
+      name: "&cPoção de Força II"
+    
+    pocao_velocidade:
+      material: "POTION"
+      data: 8226
+      amount: 1
+      slot: 3
+      name: "&bPoção de Velocidade II"
+
+# Configurações de integração
+integracao:
+  # Se true, integra com PrimeLeagueElo
+  primeleague-elo: true
+  
+  # Se true, integra com PrimeLeagueDisplay
+  primeleague-display: true 

@@ -1,0 +1,24 @@
+# Kit padrão para duelos
+default:
+  items:
+    - type: DIAMOND_SWORD
+      name: "&aEspada de Duelo"
+      lore:
+        - "&7Espada especial para duelos"
+    - type: DIAMOND_CHESTPLATE
+      name: "&aPeitoral de Duelo"
+      lore:
+        - "&7Armadura especial para duelos"
+    - type: DIAMOND_LEGGINGS
+      name: "&aCalças de Duelo"
+      lore:
+        - "&7Armadura especial para duelos"
+    - type: DIAMOND_BOOTS
+      name: "&aBotas de Duelo"
+      lore:
+        - "&7Armadura especial para duelos"
+    - type: GOLDEN_APPLE
+      amount: 16
+      name: "&6Maçã Dourada"
+      lore:
+        - "&7Item de cura para duelos" 
