@@ -1,5 +1,8 @@
 package br.com.primeleague.x1.managers;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -174,7 +177,7 @@ public class EconomyManager {
     }
     
     /**
-     * Mensagem de erro para jogador sem dinheiro suficiente
+     * Envia mensagem de dinheiro insuficiente para o jogador
      * 
      * @param player Jogador
      * @param amount Valor
@@ -184,6 +187,77 @@ public class EconomyManager {
             return;
         }
         
-        plugin.getMessageManager().sendMessage(player, "economia.sem-dinheiro", "%valor%", formatMoney(amount));
+        Map<String, String> placeholders = new HashMap<>();
+        placeholders.put("valor", formatMoney(amount));
+        plugin.getMessageManager().sendMessage(player, "economia.sem-dinheiro", placeholders);
+    }
+
+    /**
+     * Processa a perda de uma aposta
+     * 
+     * @param player Jogador
+     * @param amount Valor
+     */
+    public void processDuelLoss(Player player, double amount) {
+        if (economy == null || !isEconomyEnabled()) {
+            return;
+        }
+        
+        // A quantia já foi descontada antes do duelo, não precisa fazer nada
+    }
+
+    /**
+     * Verifica se um jogador tem dinheiro suficiente
+     * 
+     * @param player Jogador
+     * @param amount Valor
+     * @return true se tiver dinheiro suficiente, false caso contrário
+     */
+    public boolean hasMoney(Player player, double amount) {
+        if (economy == null || !isEconomyEnabled()) {
+            return true; // Se a economia estiver desativada, considera que tem dinheiro
+        }
+        
+        return economy.has(player.getName(), amount);
+    }
+
+    /**
+     * Devolve o dinheiro de uma aposta em caso de empate ou cancelamento
+     * 
+     * @param player Jogador
+     * @param amount Valor
+     */
+    public void returnBet(Player player, double amount) {
+        if (economy == null || !isEconomyEnabled()) {
+            return;
+        }
+        
+        economy.depositPlayer(player.getName(), amount);
+    }
+
+    /**
+     * Processa a vitória de um duelo, adicionando o valor da aposta para o vencedor
+     * 
+     * @param player Jogador vencedor
+     * @param amount Valor total (2x o valor apostado)
+     */
+    public void processDuelWin(Player player, double amount) {
+        if (economy == null || !isEconomyEnabled()) {
+            return;
+        }
+        
+        // A metade já foi descontada antes do duelo, agora deposita o prêmio completo
+        economy.depositPlayer(player.getName(), amount);
+    }
+
+    /**
+     * Deposita dinheiro para um jogador (alias para depositMoney)
+     * 
+     * @param playerName Nome do jogador
+     * @param amount Valor a depositar
+     * @return true se a operação foi bem-sucedida
+     */
+    public boolean giveMoney(String playerName, double amount) {
+        return depositMoney(playerName, amount);
     }
 } 

@@ -53,28 +53,78 @@ public class InventoryUtils {
      * @return true se o kit foi fornecido, false caso contrário
      */
     public static boolean giveDuelKit(Player player, Main plugin, DuelType duelType) {
-        // Verificar se o duelo usa kit
-        if (!duelType.usesKit()) {
-            return true; // Não precisa fornecer kit, jogador usa seus próprios itens
-        }
-        
-        // Verificar se o inventário deve estar vazio
-        boolean checkEmptyInventory = plugin.getConfigManager().checkEmptyInventory();
-        if (checkEmptyInventory && !isInventoryEmpty(player)) {
-            plugin.getMessageManager().sendMessage(player, "duelo.inventario-nao-vazio");
+        // Verificações de segurança para parâmetros nulos
+        if (player == null) {
+            System.out.println("[PrimeLeagueX1] ERRO: Player nulo ao tentar fornecer kit");
             return false;
         }
         
-        ConfigurationSection kitSection = plugin.getConfigManager().getConfig().getConfigurationSection("kit");
-        
-        if (kitSection == null) {
-            // Kit não configurado, usar padrão
-            giveDefaultKit(player);
-            System.out.println("[PrimeLeagueX1] Kit não configurado, usando kit padrão para " + player.getName());
-            return true;
+        if (plugin == null) {
+            System.out.println("[PrimeLeagueX1] ERRO: Plugin nulo ao tentar fornecer kit para " + player.getName());
+            return false;
         }
         
+        // Verificar se o tipo de duelo é nulo
+        if (duelType == null) {
+            // Se for nulo, assumir que usa kit
+            System.out.println("[PrimeLeagueX1] Tipo de duelo nulo, assumindo que usa kit para " + player.getName());
+        } else if (!duelType.usesKit()) {
+            return true; // Não precisa fornecer kit, jogador usa seus próprios itens
+        }
+        
+        // Verificar ConfigManager e Config
+        if (plugin.getConfigManager() == null) {
+            System.out.println("[PrimeLeagueX1] ERRO: ConfigManager nulo ao tentar fornecer kit para " + player.getName());
+            giveDefaultKit(player);
+            return false;
+        }
+        
+        // Usar método alternativo para acessar a seção "kit" diretamente
         try {
+            System.out.println("[PrimeLeagueX1] Tentando fornecer kit para " + player.getName() + "...");
+            
+            // Verificar se o inventário deve estar vazio
+            boolean checkEmptyInventory = false;
+            try {
+                checkEmptyInventory = plugin.getConfigManager().checkEmptyInventory();
+            } catch (Exception e) {
+                System.out.println("[PrimeLeagueX1] ERRO ao verificar configuração checkEmptyInventory: " + e.getMessage());
+            }
+            
+            if (checkEmptyInventory && !isInventoryEmpty(player)) {
+                try {
+                    plugin.getMessageManager().sendMessage(player, "duelo.inventario-nao-vazio");
+                } catch (Exception e) {
+                    player.sendMessage("§cSeu inventário precisa estar vazio para receber o kit!");
+                }
+                return false;
+            }
+            
+            // Vamos simplificar e dar diretamente kit completo de diamante se a configuração falhar
+            // Primeira tentativa: buscar seção normalmente
+            ConfigurationSection kitSection = null;
+            
+            if (plugin.getConfigManager().getConfig() != null) {
+                kitSection = plugin.getConfigManager().getConfig().getConfigurationSection("kit");
+                if (kitSection == null) {
+                    System.out.println("[PrimeLeagueX1] Seção 'kit' não encontrada na configuração principal.");
+                }
+            } else {
+                System.out.println("[PrimeLeagueX1] Configuração é nula.");
+            }
+            
+            // Se não encontrou a seção kit, usar kit padrão
+            if (kitSection == null) {
+                System.out.println("[PrimeLeagueX1] Usando kit padrão para " + player.getName());
+                giveDefaultKit(player);
+                return true;
+            }
+            
+            // Limpar inventário do jogador antes de dar kit
+            player.getInventory().clear();
+            player.getInventory().setArmorContents(null);
+            
+            // Continuar processamento apenas se encontrou a seção
             // Kit de armadura
             if (kitSection.contains("armor")) {
                 ConfigurationSection armorSection = kitSection.getConfigurationSection("armor");
@@ -155,7 +205,7 @@ public class InventoryUtils {
             System.out.println("[PrimeLeagueX1] Kit fornecido com sucesso para " + player.getName());
             return true;
         } catch (Exception e) {
-            System.out.println("[PrimeLeagueX1] Erro ao fornecer kit para " + player.getName() + ": " + e.getMessage());
+            System.out.println("[PrimeLeagueX1] ERRO ao fornecer kit para " + player.getName() + ": " + e.getMessage());
             e.printStackTrace();
             giveDefaultKit(player);
             return false;
@@ -192,7 +242,7 @@ public class InventoryUtils {
         // Nome personalizado
         String name = itemSection.getString("name");
         if (name != null && !name.isEmpty()) {
-            meta.setDisplayName(ColorUtils.colorize(name));
+            meta.setDisplayName(ensureValidLength(name));
         }
         
         // Lore (descrição)
@@ -230,24 +280,78 @@ public class InventoryUtils {
      * @param player Jogador
      */
     private static void giveDefaultKit(Player player) {
-        // Armadura de ferro
-        player.getInventory().setHelmet(new ItemStack(Material.IRON_HELMET));
-        player.getInventory().setChestplate(new ItemStack(Material.IRON_CHESTPLATE));
-        player.getInventory().setLeggings(new ItemStack(Material.IRON_LEGGINGS));
-        player.getInventory().setBoots(new ItemStack(Material.IRON_BOOTS));
+        if (player == null) {
+            System.out.println("[PrimeLeagueX1] ERRO: Tentativa de dar kit padrão para player nulo");
+            return;
+        }
         
-        // Espada de ferro
-        ItemStack sword = new ItemStack(Material.IRON_SWORD);
-        ItemMeta swordMeta = sword.getItemMeta();
-        swordMeta.setDisplayName(ColorUtils.colorize("&6Espada do Duelo"));
-        sword.setItemMeta(swordMeta);
-        player.getInventory().setItem(0, sword);
+        try {
+            System.out.println("[PrimeLeagueX1] Fornecendo kit padrão para " + player.getName());
+            
+            // Limpar inventário primeiro
+            player.getInventory().clear();
+            player.getInventory().setArmorContents(null);
+            
+            // Armadura de ferro
+            ItemStack helmet = new ItemStack(Material.IRON_HELMET);
+            ItemStack chestplate = new ItemStack(Material.IRON_CHESTPLATE);
+            ItemStack leggings = new ItemStack(Material.IRON_LEGGINGS);
+            ItemStack boots = new ItemStack(Material.IRON_BOOTS);
+            
+            // Aplicar itens de armadura
+            player.getInventory().setHelmet(helmet);
+            player.getInventory().setChestplate(chestplate);
+            player.getInventory().setLeggings(leggings);
+            player.getInventory().setBoots(boots);
+            
+            // Espada de ferro
+            ItemStack sword = new ItemStack(Material.IRON_SWORD);
+            ItemMeta swordMeta = sword.getItemMeta();
+            if (swordMeta != null) {
+                swordMeta.setDisplayName(ensureValidLength("&6Espada do Duelo"));
+                sword.setItemMeta(swordMeta);
+            }
+            player.getInventory().setItem(0, sword);
+            
+            // Maçãs douradas
+            ItemStack apples = new ItemStack(Material.GOLDEN_APPLE, 5);
+            player.getInventory().setItem(1, apples);
+            
+            // Poções
+            try {
+                ItemStack healthPotion = new ItemStack(Material.POTION, 3, (short) 16389); // Poção de cura instantânea
+                player.getInventory().setItem(2, healthPotion);
+            } catch (Exception e) {
+                System.out.println("[PrimeLeagueX1] Erro ao criar poção para o kit: " + e.getMessage());
+            }
+            
+            player.updateInventory();
+            System.out.println("[PrimeLeagueX1] Kit padrão fornecido com sucesso para " + player.getName());
+        } catch (Exception e) {
+            System.out.println("[PrimeLeagueX1] ERRO ao fornecer kit padrão para " + player.getName() + ": " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+    
+    /**
+     * Verifica se um nome de item excede o limite do Minecraft 1.5.2 (32 caracteres)
+     * e realiza o truncamento se necessário.
+     * 
+     * @param name Nome a ser verificado
+     * @return Nome truncado se necessário
+     */
+    public static String ensureValidLength(String name) {
+        if (name == null) {
+            return null;
+        }
         
-        // Maçãs douradas
-        ItemStack apples = new ItemStack(Material.GOLDEN_APPLE, 5);
-        player.getInventory().setItem(1, apples);
+        String colorized = ColorUtils.colorize(name);
+        if (colorized.length() > 32) {
+            System.out.println("[PrimeLeagueX1] AVISO: Nome de item muito longo truncado: " + colorized);
+            return colorized.substring(0, 32);
+        }
         
-        player.updateInventory();
+        return colorized;
     }
     
     /**
@@ -263,7 +367,39 @@ public class InventoryUtils {
         ItemMeta meta = item.getItemMeta();
         
         if (name != null) {
-            meta.setDisplayName(ColorUtils.colorize(name));
+            // Garantir que o nome não exceda o limite
+            meta.setDisplayName(ensureValidLength(name));
+        }
+        
+        if (lore != null && lore.length > 0) {
+            // Usar ArrayList em vez de Stream (compatível com Java 7)
+            List<String> colorizedLore = new ArrayList<String>();
+            for (String line : lore) {
+                colorizedLore.add(ColorUtils.colorize(line));
+            }
+            meta.setLore(colorizedLore);
+        }
+        
+        item.setItemMeta(meta);
+        return item;
+    }
+    
+    /**
+     * Cria um item com nome, durabilidade e descrição personalizados
+     * 
+     * @param material Material do item
+     * @param durability Durabilidade/data value do item
+     * @param name Nome do item
+     * @param lore Descrição do item
+     * @return Item criado
+     */
+    public static ItemStack createNamedItem(Material material, short durability, String name, String... lore) {
+        ItemStack item = new ItemStack(material, 1, durability);
+        ItemMeta meta = item.getItemMeta();
+        
+        if (name != null) {
+            // Garantir que o nome não exceda o limite
+            meta.setDisplayName(ensureValidLength(name));
         }
         
         if (lore != null && lore.length > 0) {

@@ -1,81 +1,117 @@
-# Configuração do PrimeLeagueX1
-# Plugin de duelos (X1, 2v2, 3v3) para servidor Prime League
+# =========================================
+# PrimeLeagueX1 - Configuração v1.0.1
+# Plugin de duelos (X1, 2v2, 3v3) para servidores Bukkit/Spigot 1.5.2
+# =========================================
 
-# Configurações gerais
+# =========================================
+# CONFIGURAÇÕES GERAIS
+# Configurações básicas de funcionalidade do plugin
+# =========================================
 configuracoes:
   # Tempo de contagem regressiva para iniciar duelo (segundos)
+  # Quanto tempo os jogadores esperarão antes de poder atacar
   contagem-regressiva: 3
   
   # Tempo máximo de duelo (segundos)
+  # Se chegar a este tempo, o duelo será considerado empate
+  # Recomendado: entre 180 (3min) e 600 (10min)
   tempo-maximo-duelo: 300
   
   # Tempo para confirmar um desafio (segundos)
+  # Tempo que o jogador tem para aceitar ou recusar um desafio
   tempo-confirmacao: 30
   
   # Ativar kits de duelo
+  # Se true, permite usar kits pré-definidos durante duelos
+  # Os kits podem ser configurados na seção "kit" abaixo
   usar-kit: true
   
   # Usar sistema de Elo
+  # Se true, ativa o sistema de ranking baseado em pontuação de Elo
+  # Jogadores ganham/perdem pontos baseados na diferença de Elo
   usar-elo: true
   
   # Ativar sistema de apostas
+  # Se true, permite apostas monetárias durante os duelos
   usar-apostas: true
   
   # Quantidade de jogadores mostrados no ranking
+  # Quantos jogadores aparecem no menu de ranking
   quantidade-top-jogadores: 10
   
   # Distância máxima para duelo local (blocos)
+  # Quão perto os jogadores precisam estar para iniciar um duelo local
   distancia-maxima-duelo-local: 10
   
   # Verificar se o inventário está vazio antes de dar kit
+  # Se true, impede duelos com kit se o jogador tiver itens no inventário
   checar-inventario-vazio: true
+  
+  # Ativar nametags personalizadas durante duelos
+  # Se true, mostra nametags especiais durante duelos para identificar oponentes
+  usar-nametags: true
 
-# Configurações de arena
+# =========================================
+# CONFIGURAÇÕES DE ARENA
+# Defina as posições da arena de duelo
+# Você pode configurar isto in-game usando comandos do admin
+# =========================================
 arena:
-  # Posição 1 da arena (configurar via comando /x1 admin setpos1)
+  # Posição 1 da arena (primeira posição do duelo)
+  # Use o comando: /x1 admin setpos1
   pos1:
     world: "world"
     x: 0
     y: 64
     z: 0
   
-  # Posição 2 da arena (configurar via comando /x1 admin setpos2)
+  # Posição 2 da arena (segunda posição do duelo)
+  # Use o comando: /x1 admin setpos2
   pos2:
     world: "world"
     x: 0
     y: 64
     z: 0
     
-  # Posição do local de espectadores (configurar via comando /x1 admin setspectator)
+  # Posição do local de espectadores
+  # Use o comando: /x1 admin setspectator
   espectador:
     world: "world"
     x: 0
     y: 70
     z: 0
 
-# Configurações de sons
+# =========================================
+# CONFIGURAÇÕES DE SONS
+# Defina os sons para diferentes eventos do plugin
+# Sons disponíveis: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Sound.html
+# =========================================
 sons:
-  # Som ao iniciar duelo
-  iniciar-duelo: "NOTE_PLING"
+  # Sons relacionados a duelos
+  iniciar-duelo: ENDERDRAGON_GROWL
+  vitoria: LEVEL_UP
+  derrota: GHAST_SCREAM
+  empate: CLICK
+  contagem: NOTE_PLING
   
-  # Som ao vencer duelo
-  vitoria: "LEVEL_UP"
+  # Sons relacionados a notificações
+  notificacao: ORB_PICKUP
+  erro: VILLAGER_NO
+  aviso: VILLAGER_HAGGLE
+  sucesso: NOTE_PLING
   
-  # Som ao perder duelo
-  derrota: "ANVIL_LAND"
-  
-  # Som ao empatar duelo
-  empate: "NOTE_BASS"
-  
-  # Som ao enviar desafio
-  desafio-enviado: "ORB_PICKUP"
-  
-  # Som ao receber desafio
-  desafio-recebido: "NOTE_BASS_GUITAR"
+  # Sons relacionados a interface
+  abrir-menu: CHEST_OPEN
+  fechar-menu: CHEST_CLOSE
+  click-menu: CLICK
 
-# Configurações do sistema de apostas
+# =========================================
+# CONFIGURAÇÕES DE APOSTAS
+# Defina as opções para o sistema de apostas
+# =========================================
 apostas:
-  # Valores pré-definidos mostrados no menu
+  # Valores pré-definidos mostrados no menu (em ordem crescente)
+  # Os valores que aparecem como botões no menu de apostas
   valores-predefinidos:
     - 100
     - 500
@@ -83,10 +119,21 @@ apostas:
     - 5000
     - 10000
     - 50000
+    
+  # Taxa mínima de aposta
+  # Valor mínimo que pode ser apostado (0 = sem mínimo)
+  minimo: 0
+  
+  # Taxa máxima de aposta
+  # Valor máximo que pode ser apostado (0 = sem máximo)
+  maximo: 0
 
-# Kit de duelo (itens fornecidos ao jogador)
+# =========================================
+# KIT DE DUELO
+# Configure os itens fornecidos aos jogadores em duelos com kit
+# =========================================
 kit:
-  # Equipamentos
+  # Equipamentos (armaduras)
   armor:
     helmet:
       material: "DIAMOND_HELMET"
@@ -116,7 +163,7 @@ kit:
         DURABILITY: 3
       name: "&bBotas de Duelo"
   
-  # Itens
+  # Itens de inventário
   items:
     espada:
       material: "DIAMOND_SWORD"
@@ -149,10 +196,122 @@ kit:
       slot: 3
       name: "&bPoção de Velocidade II"
 
-# Configurações de integração
+# =========================================
+# CONFIGURAÇÕES DE INTEGRAÇÃO
+# Integrações com outros plugins
+# =========================================
 integracao:
   # Se true, integra com PrimeLeagueElo
   primeleague-elo: true
   
   # Se true, integra com PrimeLeagueDisplay
-  primeleague-display: true 
+  primeleague-display: true
+  
+  # Configurações do WorldGuard
+  worldguard:
+    # Se deve permitir PvP em áreas protegidas pelo WorldGuard para jogadores em duelo
+    permitir-pvp-em-areas-protegidas: true
+
+# =========================================
+# CONFIGURAÇÕES DE EQUIPES
+# Configurações para duelos em equipe (2v2, 3v3)
+# =========================================
+equipes:
+  # Prefixos de equipe
+  usar-prefixos: true
+  # Cores das equipes (não altere os nomes das chaves)
+  cores:
+    equipe1: "&c"
+    equipe2: "&9"
+    equipe3: "&a"
+    equipe4: "&e"
+  # Nomes padrão das equipes
+  nomes:
+    equipe1: "Vermelho"
+    equipe2: "Azul"
+    equipe3: "Verde"
+    equipe4: "Amarelo"
+  # Exibir tag da equipe acima dos jogadores
+  mostrar-tag-acima: true
+  # Exibir tag da equipe no chat
+  mostrar-tag-chat: true
+  # Formato do prefixo no chat
+  formato-chat: "&8[%cor%%equipe%&8] &r" 
+
+# =========================================
+# SISTEMA DE REGISTRO DE DUELOS
+# Configurações para o sistema de logs de duelos
+# =========================================
+registro-duelos:
+  # Ativar sistema de registro de duelos
+  # Se true, salva logs detalhados de cada duelo
+  ativar: true
+  
+  # Tipos de eventos para registrar
+  eventos:
+    inicio-duelo: true
+    fim-duelo: true
+    dano-causado: true
+    uso-itens: true
+    movimentos: false
+  
+  # Armazenamento máximo (dias)
+  # Duelos mais antigos que este valor serão automaticamente removidos
+  dias-armazenamento: 7
+  
+  # Máximo de duelos para armazenar por jogador
+  # Limita o histórico de duelos por jogador
+  max-duelos-jogador: 20
+  
+  # Salvar detalhes de movimento
+  # Se true, registra a movimentação dos jogadores (aumenta uso de armazenamento)
+  detalhes-movimento: false
+
+# =========================================
+# SISTEMA DE RIVALIDADES
+# Configurações para o sistema de rivalidades entre jogadores
+# =========================================
+rivalidade:
+  # Ativar sistema de rivalidades
+  # Se true, ativa o sistema de rivalidades entre jogadores
+  ativar: true
+  
+  # Número mínimo de duelos para considerar uma rivalidade
+  # Quantos duelos são necessários entre dois jogadores para formar uma rivalidade
+  duelos_para_ativar: 5
+  
+  # Anunciar novas rivalidades
+  # Se true, envia um anúncio quando uma nova rivalidade é formada
+  anunciar_novas: true
+  
+  # Destaque para rivais
+  # Se true, destaca visualmente os jogadores rivais quando estão próximos
+  destacar_rivais: true
+  
+  # Anunciar duelos entre rivais
+  # Se true, envia um anúncio quando dois rivais vão duelar
+  anunciar_duelos: true
+  
+  # Bônus de ELO em duelos entre rivais
+  # Quanto mais pontos de ELO são ganhos/perdidos em duelos entre rivais
+  bonus_elo: 25
+  
+  # Efeitos especiais para duelos de rivais
+  # Se true, adiciona efeitos visuais especiais em duelos entre rivais
+  efeitos_especiais: true
+  
+  # Exibir placar da rivalidade no scoreboard durante duelo
+  mostrar_scoreboard: true
+  
+  # Reproduzir som especial quando duelo entre rivais inicia
+  som_inicio: true
+  
+  # Exibir título especial quando um duelo entre rivais inicia
+  titulo_inicio: true
+  
+  # Exibir título especial quando um duelo entre rivais termina
+  titulo_fim: true
+  
+  # Fazer broadcast global quando dois rivais se enfrentam
+  # Se true, anuncia para todo o servidor quando rivais lutam
+  broadcast: false 

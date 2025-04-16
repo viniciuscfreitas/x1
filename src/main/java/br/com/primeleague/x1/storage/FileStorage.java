@@ -77,42 +77,79 @@ public class FileStorage {
      * Carrega os dados dos arquivos
      */
     private void loadData() {
-        // Carrega as estatísticas dos jogadores
-        ConfigurationSection statsSection = statsConfig.getConfigurationSection("players");
+        // Carregar estatísticas
+        ConfigurationSection statsSection = statsConfig.getConfigurationSection("estatisticas");
         if (statsSection != null) {
             for (String playerName : statsSection.getKeys(false)) {
                 ConfigurationSection playerSection = statsSection.getConfigurationSection(playerName);
                 if (playerSection != null) {
                     PlayerStats stats = new PlayerStats(playerName);
-                    stats.setVictories(playerSection.getInt("victories", 0));
-                    stats.setDefeats(playerSection.getInt("defeats", 0));
-                    stats.setDraws(playerSection.getInt("draws", 0));
-                    stats.setStreak(playerSection.getInt("streak", 0));
-                    stats.setElo(playerSection.getInt("elo", 1000));
+                    stats.setVictories(playerSection.getInt("vitórias", 0));
+                    stats.setDefeats(playerSection.getInt("derrotas", 0));
+                    stats.setDraws(playerSection.getInt("empates", 0));
+                    
+                    if (plugin.getConfigManager().useElo()) {
+                        stats.setElo(playerSection.getInt("elo", 1000));
+                    }
                     
                     playerStats.put(playerName, stats);
                 }
             }
         }
         
-        // Carrega o histórico de duelos
-        ConfigurationSection historySection = historyConfig.getConfigurationSection("duels");
+        // Carregar histórico
+        ConfigurationSection historySection = historyConfig.getConfigurationSection("historico");
         if (historySection != null) {
             for (String key : historySection.getKeys(false)) {
                 ConfigurationSection duelSection = historySection.getConfigurationSection(key);
                 if (duelSection != null) {
-                    String player1 = duelSection.getString("player1");
-                    String player2 = duelSection.getString("player2");
-                    String winner = duelSection.getString("winner");
-                    String mode = duelSection.getString("mode");
-                    String location = duelSection.getString("location");
-                    long date = duelSection.getLong("date");
-                    int duration = duelSection.getInt("duration");
-                    double bet = duelSection.getDouble("bet");
-                    
-                    DuelHistory history = new DuelHistory(player1, player2, winner, mode, location, date, duration, bet);
-                    duelHistory.add(history);
+                    DuelHistory duel = new DuelHistory(
+                        duelSection.getString("jogador1"),
+                        duelSection.getString("jogador2"),
+                        duelSection.getString("vencedor"),
+                        "X1", // Modo padrão
+                        "Desconhecido", // Local padrão
+                        duelSection.getLong("data"),
+                        duelSection.getInt("duracao", 0),
+                        duelSection.getDouble("aposta", 0.0)
+                    );
+                    duelHistory.add(duel);
                 }
+            }
+        }
+        
+        // Carregar estatísticas individuais
+        File playersFolder = new File(plugin.getDataFolder(), "players");
+        if (playersFolder.exists() && playersFolder.isDirectory()) {
+            int individualStats = 0;
+            
+            for (File playerFile : playersFolder.listFiles()) {
+                if (playerFile.isFile() && playerFile.getName().endsWith(".yml")) {
+                    try {
+                        String playerName = playerFile.getName().replace(".yml", "");
+                        YamlConfiguration config = YamlConfiguration.loadConfiguration(playerFile);
+                        
+                        if (!playerStats.containsKey(playerName)) {
+                            PlayerStats stats = new PlayerStats(playerName);
+                            stats.setVictories(config.getInt("stats.vitórias", 0));
+                            stats.setDefeats(config.getInt("stats.derrotas", 0));
+                            stats.setDraws(config.getInt("stats.empates", 0));
+                            
+                            if (plugin.getConfigManager().useElo()) {
+                                stats.setElo(config.getInt("stats.elo", 1000));
+                            }
+                            
+                            playerStats.put(playerName, stats);
+                            individualStats++;
+                        }
+                    } catch (Exception e) {
+                        System.out.println("[PrimeLeagueX1] Erro ao carregar arquivo individual: " + playerFile.getName() + ": " + e.getMessage());
+                    }
+                }
+            }
+            
+            if (individualStats > 0) {
+                System.out.println("[PrimeLeagueX1] " + individualStats + " estatísticas individuais adicionais carregadas.");
             }
         }
     }
@@ -121,42 +158,71 @@ public class FileStorage {
      * Salva os dados nos arquivos
      */
     public void saveData() {
-        // Salva as estatísticas dos jogadores
-        ConfigurationSection statsSection = statsConfig.createSection("players");
-        for (Map.Entry<String, PlayerStats> entry : playerStats.entrySet()) {
-            String playerName = entry.getKey();
-            PlayerStats stats = entry.getValue();
-            
-            ConfigurationSection playerSection = statsSection.createSection(playerName);
-            playerSection.set("victories", stats.getVictories());
-            playerSection.set("defeats", stats.getDefeats());
-            playerSection.set("draws", stats.getDraws());
-            playerSection.set("streak", stats.getStreak());
-            playerSection.set("elo", stats.getElo());
-        }
-        
-        // Salva o histórico de duelos
-        ConfigurationSection historySection = historyConfig.createSection("duels");
-        for (int i = 0; i < duelHistory.size(); i++) {
-            DuelHistory history = duelHistory.get(i);
-            
-            ConfigurationSection duelSection = historySection.createSection(String.valueOf(i));
-            duelSection.set("player1", history.getPlayer1());
-            duelSection.set("player2", history.getPlayer2());
-            duelSection.set("winner", history.getWinner());
-            duelSection.set("mode", history.getMode());
-            duelSection.set("location", history.getLocation());
-            duelSection.set("date", history.getDate());
-            duelSection.set("duration", history.getDuration());
-            duelSection.set("bet", history.getBet());
-        }
-        
-        // Salva os arquivos
         try {
-            statsConfig.save(statsFile);
-            historyConfig.save(historyFile);
-        } catch (IOException e) {
-            plugin.getLogger().severe("Não foi possível salvar os arquivos de dados!");
+            System.out.println("[PrimeLeagueX1] Salvando dados de estatísticas e histórico...");
+            
+            // Salva as estatísticas dos jogadores
+            ConfigurationSection statsSection = statsConfig.createSection("players");
+            for (Map.Entry<String, PlayerStats> entry : playerStats.entrySet()) {
+                String playerName = entry.getKey();
+                PlayerStats stats = entry.getValue();
+                
+                // Verificar se as estatísticas estão corretas antes de salvar
+                System.out.println("[PrimeLeagueX1] Salvando estatísticas para " + playerName + ": V=" + 
+                    stats.getVictories() + ", D=" + stats.getDefeats() + ", E=" + stats.getDraws());
+                
+                ConfigurationSection playerSection = statsSection.createSection(playerName);
+                playerSection.set("victories", stats.getVictories());
+                playerSection.set("defeats", stats.getDefeats());
+                playerSection.set("draws", stats.getDraws());
+                playerSection.set("streak", stats.getStreak());
+                playerSection.set("elo", stats.getElo());
+                
+                // Também salvar no arquivo individual do jogador para garantir
+                savePlayerStats(playerName, stats);
+            }
+            
+            // Salva o histórico de duelos
+            ConfigurationSection historySection = historyConfig.createSection("duels");
+            for (int i = 0; i < duelHistory.size(); i++) {
+                DuelHistory history = duelHistory.get(i);
+                
+                ConfigurationSection duelSection = historySection.createSection(String.valueOf(i));
+                duelSection.set("player1", history.getPlayer1());
+                duelSection.set("player2", history.getPlayer2());
+                duelSection.set("winner", history.getWinner());
+                duelSection.set("mode", history.getMode());
+                duelSection.set("location", history.getLocation());
+                duelSection.set("date", history.getDate());
+                duelSection.set("duration", history.getDuration());
+                duelSection.set("bet", history.getBet());
+            }
+            
+            // Salva os arquivos
+            try {
+                statsConfig.save(statsFile);
+                historyConfig.save(historyFile);
+                
+                // Verificar se os arquivos foram salvos
+                if (statsFile.exists() && statsFile.length() > 0) {
+                    System.out.println("[PrimeLeagueX1] Arquivo de estatísticas salvo com sucesso: " + statsFile.length() + " bytes");
+                } else {
+                    System.out.println("[PrimeLeagueX1] ERRO: Arquivo de estatísticas vazio ou inexistente após salvamento!");
+                }
+                
+                if (historyFile.exists() && historyFile.length() > 0) {
+                    System.out.println("[PrimeLeagueX1] Arquivo de histórico salvo com sucesso: " + historyFile.length() + " bytes");
+                } else {
+                    System.out.println("[PrimeLeagueX1] ERRO: Arquivo de histórico vazio ou inexistente após salvamento!");
+                }
+                
+                System.out.println("[PrimeLeagueX1] Todos os dados salvos com sucesso!");
+            } catch (IOException e) {
+                System.out.println("[PrimeLeagueX1] Erro ao salvar arquivos: " + e.getMessage());
+                e.printStackTrace();
+            }
+        } catch (Exception e) {
+            plugin.getLogger().severe("Erro durante o processo de salvamento de dados: " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -272,21 +338,77 @@ public class FileStorage {
      * @param stats Estatísticas do jogador
      */
     public void savePlayerStats(String playerName, PlayerStats stats) {
+        if (stats == null) {
+            return;
+        }
+        
         try {
             File playerFile = getPlayerFile(playerName);
             YamlConfiguration config = YamlConfiguration.loadConfiguration(playerFile);
             
-            config.set("stats.vitórias", stats.getVictories());
-            config.set("stats.derrotas", stats.getDefeats());
-            config.set("stats.empates", stats.getDraws());
+            // Verificar se houve mudanças
+            boolean hasChanges = false;
             
-            if (plugin.getConfigManager().useElo()) {
-                config.set("stats.elo", stats.getElo());
+            if (config.getInt("stats.vitórias") != stats.getVictories()) {
+                config.set("stats.vitórias", stats.getVictories());
+                hasChanges = true;
             }
             
-            config.save(playerFile);
+            if (config.getInt("stats.derrotas") != stats.getDefeats()) {
+                config.set("stats.derrotas", stats.getDefeats());
+                hasChanges = true;
+            }
+            
+            if (config.getInt("stats.empates") != stats.getDraws()) {
+                config.set("stats.empates", stats.getDraws());
+                hasChanges = true;
+            }
+            
+            if (plugin.getConfigManager().useElo() && config.getInt("stats.elo") != stats.getElo()) {
+                config.set("stats.elo", stats.getElo());
+                hasChanges = true;
+            }
+            
+            // Salvar apenas se houver mudanças
+            if (hasChanges) {
+                config.save(playerFile);
+                System.out.println("[PrimeLeagueX1] Estatísticas do jogador " + playerName + " atualizadas.");
+            }
         } catch (IOException e) {
             plugin.getLogger().severe("Erro ao salvar estatísticas do jogador " + playerName + ": " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+    
+    /**
+     * Salva o histórico de duelos
+     */
+    public void saveHistory() {
+        try {
+            // Limpar configuração anterior
+            historyConfig = new YamlConfiguration();
+            
+            // Criar seção de histórico
+            ConfigurationSection historySection = historyConfig.createSection("historico");
+            
+            // Salvar cada duelo
+            for (int i = 0; i < duelHistory.size(); i++) {
+                DuelHistory duel = duelHistory.get(i);
+                ConfigurationSection duelSection = historySection.createSection(String.valueOf(i));
+                
+                duelSection.set("jogador1", duel.getPlayer1());
+                duelSection.set("jogador2", duel.getPlayer2());
+                duelSection.set("vencedor", duel.getWinner());
+                duelSection.set("data", duel.getDate());
+                duelSection.set("aposta", duel.getBet());
+            }
+            
+            // Salvar arquivo
+            historyConfig.save(historyFile);
+            System.out.println("[PrimeLeagueX1] Histórico de duelos salvo com sucesso. Total: " + duelHistory.size());
+            
+        } catch (IOException e) {
+            plugin.getLogger().severe("Erro ao salvar histórico de duelos: " + e.getMessage());
             e.printStackTrace();
         }
     }

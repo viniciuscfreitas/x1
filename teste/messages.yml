@@ -1,102 +1,8 @@
-# Arquivo de mensagens do PrimeLeagueX1
-# Todas as mensagens usam códigos de cor com &
-
-# Prefixos e gerais
-plugin.prefix: "&6[PrimeLeagueX1]&r"
-erro.permissao: "&cVoce nao tem permissao para isso."
-erro.console: "&cApenas jogadores podem usar este comando."
-erro.jogador-offline: "&cJogador nao encontrado ou offline."
-
-# Scoreboard
-scoreboard.enabled: "&aScoreboard ativado."
-scoreboard.disabled: "&cScoreboard desativado."
-scoreboard.titulo: "&eDuelo X1"
-scoreboard.aguardando: "&eAguardando duelo"
-scoreboard.vitoria: "&aVitoria de: &b%player%"
-scoreboard.derrota: "&cDerrota de: &7%player%"
-scoreboard.dano: "&eDano Causado: &f%dano%"
-scoreboard.versus: "&fContra: &b%oponente%"
-
-# GUI
-gui.item-voltar: "&cVoltar"
-gui.desc-voltar: "&7Clique para voltar ao menu anterior."
-gui.item-cancelar: "&cCancelar"
-gui.desc-cancelar: "&7Clique para cancelar."
-gui.item-apostar: "&aApostar %valor% Dollars"
-gui.item-apostar-personalizado: "&bValor personalizado"
-gui.item-sem-aposta: "&7Desafiar sem aposta"
-
-# Title Messages
-x1.title.inicio: "&e3... 2... 1... LUTE!"
-x1.title.vitoria: "&aVitoria!"
-x1.title.derrota: "&cDerrota!"
-x1.title.empate: "&eEmpate!"
-
-# Sistema de duelo
-duelo.iniciado: "&aDuelo iniciado entre &b%jogador1% &ae &b%jogador2%&a!"
-duelo.cancelado: "&cO duelo foi cancelado."
-duelo.fora-limite: "&cVoce saiu da area do duelo!"
-duelo.pendente: "&eVoce ja tem um convite pendente."
-duelo.vitoria: "&aVoce venceu o duelo!"
-duelo.derrota: "&cVoce perdeu o duelo."
-duelo.stats.atualizado: "&aEstatisticas atualizadas com sucesso!"
-
-# Sistema de apostas
-aposta.valor-invalido: "&cValor invalido. Use apenas numeros."
-aposta.sem-dinheiro: "&cVoce nao tem dinheiro suficiente."
-aposta.enviada: "&aAposta enviada para %jogador% no valor de %valor% Dollars."
-aposta.aceita: "&aAposta aceita com sucesso!"
-aposta.cancelada: "&cAposta cancelada."
-
-# Mensagens de ranking
-ranking.top-header: "&6Top 10 Jogadores"
-ranking.linha: "&e%pos%. &b%jogador% &7- &a%vitorias% vitorias"
-
-# Mensagens de erro genericas
-erro.geral: "&cOcorreu um erro. Tente novamente."
-erro.duelo-existente: "&cVoce ja esta em um duelo."
-erro.jogador-ocupado: "&cO jogador esta ocupado."
-
-# Mensagens de rivalidade
-rival.placar: "&ePlacar: &b%vitorias1% &7- &b%vitorias2%"
-rival.broadcast: "&6Duelo entre rivais! &b%player1% &7vs &b%player2%"
-rival.revanche: "&6%vencedor% &econseguiu a revanche!"
-rival.mantida: "&6%vencedor% &emanteve a lideranca!"
-
-# Mensagens de configuracao
-config.reload: "&aConfiguracoes recarregadas com sucesso!"
-config.erro: "&cErro ao recarregar configuracoes."
-
-# Mensagens de arena
-arena.ocupada: "&cEsta arena ja esta em uso."
-arena.desocupada: "&aArena liberada."
-arena.nao-encontrada: "&cArena nao encontrada."
-
-# Mensagens de kit
-kit.fornecido: "&aKit de duelo fornecido com sucesso!"
-kit.inventario-cheio: "&cSeu inventario esta cheio!"
-
-# Mensagens de estatisticas
-stats.atualizadas: "&aSuas estatisticas foram atualizadas!"
-stats.visualizar: "&eEstatisticas de &b%jogador%&e:"
-stats.vitorias: "&aVitorias: &f%vitorias%"
-stats.derrotas: "&cDerrotas: &f%derrotas%"
-stats.empates: "&eEmpates: &f%empates%"
-stats.elo: "&bElo: &f%elo%"
-
-# Mensagens de comando
-cmd.ajuda: "&6=== Ajuda do PrimeLeagueX1 ===\n&e/x1 desafiar <jogador> &7- Desafiar um jogador\n&e/x1 stats [jogador] &7- Ver estatisticas\n&e/x1 top &7- Ver ranking\n&e/x1 kit &7- Receber kit de duelo"
-cmd.desafio-enviado: "&aDesafio enviado para &b%jogador%&a!"
-cmd.desafio-recebido: "&aVoce recebeu um desafio de &b%jogador%&a!"
-cmd.desafio-aceito: "&aDesafio aceito por &b%jogador%&a!"
-cmd.desafio-negado: "&cDesafio negado por &b%jogador%&c."
-cmd.desafio-expirado: "&cO desafio expirou."
-
 # Mensagens do PrimeLeagueX1
 # Todas as mensagens do plugin
 
 # O prefixo que será mostrado antes de cada mensagem
-prefixo: "&6[X1] &r"
+prefixo: "&6[&c*&6] &fX1 &6[&c*&6] &r"
 
 # Mensagens gerais
 geral:
@@ -107,7 +13,6 @@ geral:
   jogador-offline: "&cEste jogador não está online!"
   voce-mesmo: "&cVocê não pode desafiar a si mesmo!"
   reload: "&a+ As configurações foram recarregadas com sucesso!"
-  reload-completo: "&aConfigurações e mensagens recarregadas com sucesso!"
 
 # Mensagens de duelo - organizadas por categoria
 duelo:
@@ -123,7 +28,7 @@ duelo:
   # Mensagens de envio/recebimento
   desafio-enviado: "&a+ Você desafiou &f%player% &apara um &e%tipo%&a!"
   recebeu-desafio: "&a+ Você recebeu um desafio de &f%player% &apara um &e%tipo%&a!"
-  valor-aposta: "&a$ Valor da aposta: &f%valor% Dollars"
+  aposta-info: "&a$ Valor da aposta: &f%valor%"
   
   # Mensagens sobre expiração
   desafio-expirado: "&cSeu desafio para &f%player% &cexpirou!"
@@ -167,14 +72,13 @@ duelo:
   comando-bloqueado: "&c! Você não pode usar comandos durante um duelo!"
   item-bloqueado: "&c! Você não pode jogar itens durante um duelo!"
   dano-equipe: "&c! Você não pode atacar membros da sua equipe!"
-  inventario-nao-vazio: "&c! Seu inventário precisa estar vazio para usar o kit de duelo!"
-  oponente-inventario-nao-vazio: "&c! O jogador &f%player% &cprecisa esvaziar o inventário primeiro!"
   
   # Outras mensagens
   modo-espectador: "&a* Você está no modo espectador!"
   erro-uso-desafio: "&cUso correto: &f/x1 desafiar <jogador>"
   muito-longe-oponente: "&c! Você está se afastando muito do seu oponente!"
   teleporte-muito-longe: "&cVocê não pode se teleportar para longe do seu oponente!"
+  inventario-nao-vazio: "&c! Seu inventário precisa estar vazio para usar o kit de duelo!"
   aguarde-contagem: "&c! Aguarde a contagem regressiva terminar para atacar!"
   desafio-muito-longe: "&cVocê está muito longe do jogador para um duelo local!"
   
@@ -286,89 +190,42 @@ integracao:
 
 # Mensagens de GUI
 gui:
-  # Títulos de menus - abreviados para respeitar o limite de 32 caracteres
-  titulo-principal: "§8Menu X1"
-  titulo-selecao: "§aEscolha um Jogador"
-  titulo-confirmacao: "§eConfirmar Desafio"
-  titulo-aposta: "§6Menu de Apostas"
-  titulo-equipe: "§9Menu de Equipes"
-  titulo-estatisticas: "§bSuas Estatísticas"
-  titulo-ranking: "§eRanking Geral"
-  titulo-admin: "§cMenu Admin"
-  titulo-espectador: "§dAssistir Duelos"
-  titulo-historico: "§7Histórico"
-  
+  titulo-principal: "&8● &c* &fMenu de Duelos &c* &8●"
+  titulo-desafio: "&8● &c* &fDesafiar Jogador &c* &8●"
+  titulo-confirmar: "&8● &c* &fConfirmar Desafio &c* &8●"
+  titulo-apostas: "&8● &c* &fMenu de Apostas &c* &8●"
+  titulo-estatisticas: "&8● &c* &fSuas Estatísticas &c* &8●"
+  titulo-ranking: "&8● &c* &fRanking de Duelos &c* &8●"
+  titulo-admin: "&8● &c* &fMenu Administrativo &c* &8●"
+  titulo-equipes: "&8● &c* &fFormação de Equipes &c* &8●"
+  titulo-espectador: "&8● &c* &fAssistir Duelos &c* &8●"
+  titulo-historico: "&8● &c* &fHistórico de Duelos &c* &8●"
+
   # Itens GUI Principal
-  item-desafiar: "§cDesafiar Jogador"
-  desc-desafiar: "§7Inicie um duelo"
-  item-estatisticas: "§aEstatísticas"
-  desc-estatisticas: "§7Veja seus resultados"
-  item-ranking: "§eRanking"
-  desc-ranking: "§7Melhores jogadores"
-  item-equipe: "§9Equipes"
-  desc-equipe: "§7Gerencie sua equipe"
-  item-espectador: "§dAssistir Duelos"
-  desc-espectador: "§7Assista duelos ativos"
-  item-admin: "§6Admin"
-  desc-admin: "§7Opções administrativas"
-  item-rivais: "§cRivais"
-  desc-rivais: "§7Veja seus rivais"
-  item-perfil: "§bPerfil"
-  desc-perfil: "§7Seu perfil de duelos"
-  
-  # Menu administrativo
-  titulo-admin: "§cAdmin X1"
-  item-admin-arenas: "§eArenas"
-  desc-admin-arenas: "§7Configure arenas"
-  item-admin-kits: "§aKits"
-  desc-admin-kits: "§7Configure kits"
-  item-admin-estatisticas: "§bEstatísticas"
-  desc-admin-estatisticas: "§7Estatísticas gerais"
-  item-admin-reset: "§cResetar Dados"
-  desc-admin-reset: "§7Apague dados"
-  item-admin-config: "§6Configurações"
-  desc-admin-config: "§7Altere configurações"
-  
-  # Menu de estatísticas
-  titulo-estatisticas: "§aStats: {player}"
-  item-vitorias: "§aVitórias"
-  item-derrotas: "§cDerrotas"
-  item-kdr: "§eK/D"
-  item-winrate: "§bWinrate"
-  item-streak: "§6Streak Atual"
-  item-melhor-streak: "§6Melhor Streak"
-  item-kills: "§cKills"
-  item-deaths: "§7Deaths"
-  
-  # Menu de ranking
-  titulo-ranking: "§eRanking - Top Jogadores"
-  ranking-vitorias: "§aVit: §f{vitorias}"
-  ranking-winrate: "§bWR: §f{winrate}%"
-  ranking-kd: "§eK/D: §f{kd}"
-  
-  # Menu de rivais
-  titulo-rivais: "§cRivais: {player}"
-  item-sem-rivais: "§7Sem rivais"
-  desc-sem-rivais: "§7Dispute mais duelos"
-  
-  # Menu de perfil
-  titulo-perfil: "§bPerfil: {player}"
-  item-info: "§eInfo"
-  desc-info-vitorias: "§aVit: §f{vitorias}"
-  desc-info-derrotas: "§cDer: §f{derrotas}"
-  desc-info-winrate: "§bWR: §f{winrate}%"
-  desc-info-streak: "§6Streak: §f{streak}"
-  item-historico: "§aHistórico"
-  desc-historico: "§7Duelos recentes"
-  item-rival-principal: "§cRival Principal"
-  desc-rival-principal: "§7{rival} §c{vitorias_rival}§7x§a{suas_vitorias}"
-  desc-sem-rival: "§7Sem rival principal"
-  
-  # Botões navegação
-  voltar: "§cVoltar"
-  proximo: "§aAvançar"
-  anterior: "§cAnterior"
-  fechar: "§cFechar"
+  item-desafiar: "&c&lDesafiar Jogador"
+  item-aceitar: "&a&lAceitar Desafio"
+  item-recusar: "&c&lRecusar Desafio"
+  item-estatisticas: "&b&lEstatísticas Pessoais"
+  item-ranking: "&6&lRanking Geral"
+  item-equipe: "&d&lFormação de Equipes"
+  item-espectador: "&7&lAssistir Duelo"
+  item-admin: "&4&lMenu Administrativo"
+
+  # Descrições
+  desc-desafiar: "&7Clique para desafiar um jogador"
+  desc-aceitar: "&7Clique para aceitar um desafio"
+  desc-recusar: "&7Clique para recusar um desafio"
+  desc-estatisticas: "&7Clique para ver suas estatísticas"
+  desc-ranking: "&7Clique para ver o ranking"
+  desc-equipe: "&7Clique para gerenciar sua equipe"
+  desc-espectador: "&7Clique para assistir duelos"
+  desc-admin: "&7Clique para acessar o menu administrativo"
+
+  # Itens diversos
+  item-voltar: "&c&lVoltar"
+  desc-voltar: "&7Clique para voltar ao menu anterior"
+  item-cancelar: "&c&lCancelar"
+  desc-cancelar: "&7Clique para cancelar a ação"
 
 # Mensagens relacionadas ao sistema de registro de duelos
 duelo-log:
@@ -378,11 +235,11 @@ duelo-log:
   comando-ajuda-limpar: "&e/x1 replay limpar &7- Remove logs antigos"
   
   lista-vazia: "&cNão há duelos registrados!"
-  lista-cabecalho: "&aDuelos registrados (ID - Data - Tipo):"
-  lista-item: "&6#%id% &7- &f%data% &7(%tipo%)"
+  lista-cabecalho: "&aDuelos registrados:"
+  lista-item: "&e%id% &7- &f%data% &7(%tipo%)"
   
   detalhes-nao-encontrado: "&cRegistro de duelo não encontrado!"
-  detalhes-cabecalho: "&a=== Detalhes do Duelo #%id% ==="
+  detalhes-cabecalho: "&a=== Detalhes do Duelo %id% ==="
   detalhes-data: "&7Data: &f%data%"
   detalhes-tipo: "&7Tipo: &f%tipo%"
   detalhes-duracao: "&7Duração: &f%duracao%"
@@ -392,85 +249,7 @@ duelo-log:
   detalhes-empate: "&7Resultado: &eEmpate"
   
   inicio-gravacao: "&7Iniciando registro do duelo..."
-  fim-gravacao: "&7Registro de duelo #%id% salvo com sucesso!"
+  fim-gravacao: "&7Registro de duelo salvo em &f%arquivo%"
   erro-gravacao: "&cErro ao salvar registro de duelo!"
   
-  logs-removidos: "&aForam removidos &f%quantidade% &alogs antigos."
-
-# Configurações do sistema de Scoreboard
-scoreboard:
-  enabled: true
-  
-  # Títulos das Scoreboards
-  preduel.title: "&eAguardando duelo"
-  duel.title: "&6X1 em andamento"
-  team.title: "&6Duelo de Times"
-  end.title: "&aDuelo Finalizado"
-  
-  # Scoreboard de Pré-duelo
-  preduel.mode: "&fModo: &a{modo}"
-  preduel.time: "&fInício: &c{tempo}s"
-  preduel.enemy: "&fContra: &b{jogador}"
-  preduel.team1: "&9Azul: &f{qtd1}"
-  preduel.team2: "&cVerm.: &f{qtd2}"
-  
-  # Scoreboard durante duelo 1v1
-  duel.you: "&aVocê: &f{vida}"
-  duel.vs: "&cVs: &f{vida}"
-  duel.time: "&fTempo: &e{tempo}"
-  duel.bet: "&6Aposta: &f${valor}"
-  
-  # Scoreboard durante duelo em equipe
-  team.blue: "&9Azul: &f{v1}"
-  team.red: "&cVerm.: &f{v2}"
-  team.time: "&fTempo: &e{tempo}"
-  team.bet: "&6Aposta: &f${valor}"
-  
-  # Scoreboard de resultado final
-  end.winner: "&aVitória de: &b{v}"
-  end.loser: "&cDerrota de: &7{p}"
-  end.damage: "&eDano Causado: &f{dc}"
-  end.damageTaken: "&eRecebido: &f{dr}"
-  end.streak: "&6Streak: &f{streak}"
-
-# Mensagens do Sistema de Rivalidade
-rival:
-  # Mensagem exibida quando uma rivalidade é detectada
-  detectada: "&c🔥 Rivalidade detectada entre {player1} e {player2}!"
-  
-  # Formato do placar no scoreboard e mensagens
-  placar: "&6Rivalidade: &c{vitorias1}&7 x &a{vitorias2}"
-  
-  # Mensagem quando um jogador consegue revanche
-  revanche: "&a{vencedor} conquistou sua revanche!"
-  
-  # Mensagem quando um jogador mantém sequência de vitórias
-  mantida: "&c{vencedor} manteve a hegemonia!"
-  
-  # Mensagem de broadcast quando rivais se enfrentam (se ativado nas configurações)
-  broadcast: "&c&l[X1] &6🔥 RIVALIDADE: &f{player1} &7({vitorias1}) VS &f{player2} &7({vitorias2}) &6está começando!"
-
-  # Mensagens relacionadas ao sistema de rivalidades
-  sem-rivais: "&c! Você ainda não tem rivais. Duele mais vezes com o mesmo jogador para desenvolver uma rivalidade."
-  lista-cabecalho: "&a=== Seus Rivais ==="
-  lista-rival: "&6%rival% &7- &a%suas_vitorias% &7x &c%vitorias_rival% &7- &f%total% duelos"
-  detalhes-cabecalho: "&a=== Rivalidade com %rival% ==="
-  detalhes-vitorias: "&7Suas vitórias: &a%suas_vitorias%"
-  detalhes-derrotas: "&7Derrotas: &c%derrotas%"
-  detalhes-total: "&7Total de duelos: &f%total%"
-  detalhes-ultimos: "&7Últimos duelos (&f%numero%&7):"
-  detalhes-ultimo-item: "&7- &f%resultado%"
-  detalhes-seu-nome: "Você"
-  nova-rivalidade: "&a! Uma rivalidade surgiu entre você e &f%rival%&a!"
-  comando-uso: "&cUso: &f/x1 rival [jogador]"
-  jogador-nao-existe: "&c! O jogador &f%jogador% &cnão existe ou nunca jogou no servidor."
-  sem-rivalidade: "&c! Você não tem uma rivalidade com &f%jogador%&c."
-  historico-vazio: "&7Ainda não há histórico de duelos."
-  desafiar-rival: "&a* Use &f/x1 desafiar %rival% &apara um novo duelo contra seu rival!"
-  rivalidade-disputada: "&a+ Esta é a sua &f%total%ª &alutas na rivalidade contra &f%rival%&a!"
-  vitoria-rival: "&a! Você aumentou sua vantagem na rivalidade contra &f%rival%&a! (&a%suas_vitorias% &fx &c%vitorias_rival%&f)"
-  derrota-rival: "&c! &f%rival% &cdiminuiu sua desvantagem nesta rivalidade! (&a%suas_vitorias% &fx &c%vitorias_rival%&f)"
-  empate-rival: "&e! Seu duelo contra &f%rival% &eterminou em empate! (&a%suas_vitorias% &fx &c%vitorias_rival%&f)"
-  virada-desvantagem: "&c! &f%rival% &cvirou a rivalidade contra você! (&a%suas_vitorias% &fx &c%vitorias_rival%&f)"
-  virada-vantagem: "&a! Você virou a rivalidade contra &f%rival%&a! (&a%suas_vitorias% &fx &c%vitorias_rival%&f)"
-  empate-placar: "&e! O placar está empatado na rivalidade com &f%rival%&e! (&f%suas_vitorias% &fx &f%vitorias_rival%&f)" 
+  logs-removidos: "&aForam removidos &f%quantidade% &alogs antigos." 

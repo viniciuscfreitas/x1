@@ -16,12 +16,14 @@ import org.bukkit.Material;
 import br.com.primeleague.x1.Main;
 import br.com.primeleague.x1.managers.MessageManager;
 import br.com.primeleague.x1.enums.DuelType;
+import br.com.primeleague.x1.enums.GUIMenu;
+import br.com.primeleague.x1.enums.TeamRole;
+import br.com.primeleague.x1.team.Team;
+import br.com.primeleague.x1.team.TeamMember;
 
 import java.util.List;
 import java.util.Arrays;
 import java.util.UUID;
-import java.util.Map;
-import java.util.HashMap;
 
 /**
  * Listener de eventos relacionados à GUI
@@ -419,9 +421,7 @@ public class GUIListener implements Listener {
                 
                 // Verificar se o jogador tem dinheiro suficiente
                 if (!plugin.getEconomyManager().hasEnoughMoney(player, betAmount)) {
-                    Map<String, String> placeholders = new HashMap<>();
-                    placeholders.put("valor", plugin.getEconomyManager().formatMoney(betAmount));
-                    plugin.getMessageManager().sendMessage(player, "apostas.saldo-insuficiente", placeholders);
+                    plugin.getMessageManager().sendMessage(player, "apostas.saldo-insuficiente", "%valor%", plugin.getEconomyManager().formatMoney(betAmount));
                     return;
                 }
                 
@@ -552,22 +552,18 @@ public class GUIListener implements Listener {
                 
                 // Verificar se o jogador já está em uma equipe
                 if (plugin.getTeamManager().isInTeam(targetName)) {
-                    Map<String, String> placeholders = new HashMap<>();
-                    placeholders.put("jogador", targetName);
-                    plugin.getMessageManager().sendMessage(player, "equipes.jogador-em-equipe", placeholders);
+                    plugin.getMessageManager().sendMessage(player, "equipes.jogador-em-equipe", 
+                            "%jogador%", targetName);
                     return;
                 }
                 
                 // Enviar convite em vez de adicionar diretamente
                 if (plugin.getTeamManager().invitePlayerToTeam(player.getName(), targetName)) {
                     player.closeInventory();
-                    Map<String, String> placeholdersPlayer = new HashMap<>();
-                    placeholdersPlayer.put("jogador", targetName);
-                    plugin.getMessageManager().sendMessage(player, "equipes.convite-enviado", placeholdersPlayer);
-                    
-                    Map<String, String> placeholdersTarget = new HashMap<>();
-                    placeholdersTarget.put("jogador", player.getName());
-                    plugin.getMessageManager().sendMessage(target, "equipes.convite-recebido", placeholdersTarget);
+                    plugin.getMessageManager().sendMessage(player, "equipes.convite-enviado", 
+                            "%jogador%", targetName);
+                    plugin.getMessageManager().sendMessage(target, "equipes.convite-recebido", 
+                            "%jogador%", player.getName());
                 } else {
                     plugin.getMessageManager().sendMessage(player, "equipes.erro-enviar-convite");
                 }

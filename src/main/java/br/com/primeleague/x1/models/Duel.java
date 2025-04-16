@@ -1,6 +1,10 @@
 package br.com.primeleague.x1.models;
 
 import java.util.UUID;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
 
 import br.com.primeleague.x1.enums.DuelState;
 import br.com.primeleague.x1.enums.DuelType;
@@ -22,6 +26,14 @@ public class Duel {
     private long endTime;
     private boolean inCountdown; // Flag para indicar que o duelo está em contagem regressiva
     
+    // Listas para duelos em equipe
+    private List<String> team1;
+    private List<String> team2;
+    private List<String> winnerTeam;
+    
+    // Mapa para armazenar eliminações por jogador
+    private Map<String, Integer> playerKills;
+    
     /**
      * Construtor
      * 
@@ -40,6 +52,63 @@ public class Duel {
         this.betAmount = 0;
         this.startTime = System.currentTimeMillis();
         this.inCountdown = false;
+        
+        // Inicializa listas vazias para equipes
+        this.team1 = new ArrayList<>();
+        this.team2 = new ArrayList<>();
+        this.winnerTeam = new ArrayList<>();
+        
+        // Inicializa o mapa de eliminações
+        this.playerKills = new HashMap<>();
+        
+        // Adiciona os líderes às suas respectivas equipes
+        if (player1 != null) {
+            this.team1.add(player1);
+            this.playerKills.put(player1, 0);
+        }
+        if (player2 != null) {
+            this.team2.add(player2);
+            this.playerKills.put(player2, 0);
+        }
+    }
+    
+    /**
+     * Construtor para duelos em equipe
+     * 
+     * @param id ID único do duelo
+     * @param leader1 Nome do líder da equipe 1
+     * @param leader2 Nome do líder da equipe 2
+     * @param team1 Lista de membros da equipe 1
+     * @param team2 Lista de membros da equipe 2
+     * @param type Tipo de duelo
+     */
+    public Duel(UUID id, String leader1, String leader2, List<String> team1, List<String> team2, DuelType type) {
+        this.id = id;
+        this.player1 = leader1;
+        this.player2 = leader2;
+        this.type = type;
+        this.state = DuelState.STARTING;
+        this.draw = false;
+        this.betAmount = 0;
+        this.startTime = System.currentTimeMillis();
+        this.inCountdown = false;
+        
+        // Inicializa as listas de equipe
+        this.team1 = new ArrayList<>(team1);
+        this.team2 = new ArrayList<>(team2);
+        this.winnerTeam = new ArrayList<>();
+        
+        // Inicializa o mapa de eliminações
+        this.playerKills = new HashMap<>();
+        
+        // Inicializa as eliminações para todos os jogadores
+        for (String player : team1) {
+            this.playerKills.put(player, 0);
+        }
+        
+        for (String player : team2) {
+            this.playerKills.put(player, 0);
+        }
     }
     
     /**
@@ -214,5 +283,233 @@ public class Duel {
             return (int) ((System.currentTimeMillis() - startTime) / 1000);
         }
         return (int) ((endTime - startTime) / 1000);
+    }
+    
+    /**
+     * Verifica se este duelo é um duelo em equipe
+     * 
+     * @return true se for um duelo em equipe, false caso contrário
+     */
+    public boolean isTeamDuel() {
+        return type.isTeamDuel();
+    }
+    
+    /**
+     * Obtém a lista de membros da equipe 1
+     * 
+     * @return Lista de membros da equipe 1
+     */
+    public List<String> getTeam1() {
+        return team1;
+    }
+    
+    /**
+     * Obtém a lista de membros da equipe 2
+     * 
+     * @return Lista de membros da equipe 2
+     */
+    public List<String> getTeam2() {
+        return team2;
+    }
+    
+    /**
+     * Define a lista de membros da equipe 1
+     * 
+     * @param team1 Nova lista de membros
+     */
+    public void setTeam1(List<String> team1) {
+        this.team1 = team1;
+    }
+    
+    /**
+     * Define a lista de membros da equipe 2
+     * 
+     * @param team2 Nova lista de membros
+     */
+    public void setTeam2(List<String> team2) {
+        this.team2 = team2;
+    }
+    
+    /**
+     * Obtém a equipe vencedora
+     * 
+     * @return Lista de membros da equipe vencedora
+     */
+    public List<String> getWinnerTeam() {
+        return winnerTeam;
+    }
+    
+    /**
+     * Define a equipe vencedora
+     * 
+     * @param winnerTeam Nova lista de membros da equipe vencedora
+     */
+    public void setWinnerTeam(List<String> winnerTeam) {
+        this.winnerTeam = winnerTeam;
+    }
+    
+    /**
+     * Verifica se um jogador está na equipe 1
+     * 
+     * @param playerName Nome do jogador
+     * @return true se o jogador está na equipe 1, false caso contrário
+     */
+    public boolean isInTeam1(String playerName) {
+        return team1.contains(playerName);
+    }
+    
+    /**
+     * Verifica se um jogador está na equipe 2
+     * 
+     * @param playerName Nome do jogador
+     * @return true se o jogador está na equipe 2, false caso contrário
+     */
+    public boolean isInTeam2(String playerName) {
+        return team2.contains(playerName);
+    }
+    
+    /**
+     * Verifica se dois jogadores estão na mesma equipe
+     * 
+     * @param player1 Nome do primeiro jogador
+     * @param player2 Nome do segundo jogador
+     * @return true se os jogadores estão na mesma equipe, false caso contrário
+     */
+    public boolean areInSameTeam(String player1, String player2) {
+        return (isInTeam1(player1) && isInTeam1(player2)) || (isInTeam2(player1) && isInTeam2(player2));
+    }
+    
+    /**
+     * Adiciona um jogador à equipe 1
+     * 
+     * @param playerName Nome do jogador
+     */
+    public void addToTeam1(String playerName) {
+        if (!team1.contains(playerName)) {
+            team1.add(playerName);
+        }
+    }
+    
+    /**
+     * Adiciona um jogador à equipe 2
+     * 
+     * @param playerName Nome do jogador
+     */
+    public void addToTeam2(String playerName) {
+        if (!team2.contains(playerName)) {
+            team2.add(playerName);
+        }
+    }
+    
+    /**
+     * Obtém a equipe de um jogador
+     * 
+     * @param playerName Nome do jogador
+     * @return 1 para equipe 1, 2 para equipe 2, 0 se não estiver em nenhuma equipe
+     */
+    public int getPlayerTeam(String playerName) {
+        if (isInTeam1(playerName)) {
+            return 1;
+        } else if (isInTeam2(playerName)) {
+            return 2;
+        } else {
+            return 0;
+        }
+    }
+    
+    /**
+     * Obtém a lista de jogadores da equipe oposta
+     * 
+     * @param playerName Nome do jogador
+     * @return Lista de jogadores da equipe oposta, ou null se o jogador não estiver em nenhuma equipe
+     */
+    public List<String> getOpponentTeam(String playerName) {
+        if (isInTeam1(playerName)) {
+            return team2;
+        } else if (isInTeam2(playerName)) {
+            return team1;
+        } else {
+            return null;
+        }
+    }
+    
+    /**
+     * Registra uma eliminação para um jogador
+     * 
+     * @param killer Nome do jogador que eliminou
+     */
+    public void addKill(String killer) {
+        int kills = playerKills.getOrDefault(killer, 0);
+        playerKills.put(killer, kills + 1);
+    }
+    
+    /**
+     * Obtém o número de eliminações de um jogador
+     * 
+     * @param playerName Nome do jogador
+     * @return Número de eliminações
+     */
+    public int getPlayerKills(String playerName) {
+        return playerKills.getOrDefault(playerName, 0);
+    }
+    
+    /**
+     * Obtém o mapa completo de eliminações
+     * 
+     * @return Mapa com jogadores e suas eliminações
+     */
+    public Map<String, Integer> getAllKills() {
+        return playerKills;
+    }
+    
+    /**
+     * Obtém o total de eliminações de uma equipe
+     * 
+     * @param teamNumber 1 para equipe 1, 2 para equipe 2
+     * @return Total de eliminações da equipe
+     */
+    public int getTeamKills(int teamNumber) {
+        List<String> team = (teamNumber == 1) ? team1 : team2;
+        int totalKills = 0;
+        
+        for (String player : team) {
+            totalKills += getPlayerKills(player);
+        }
+        
+        return totalKills;
+    }
+    
+    /**
+     * Verifica se o jogador está participando deste duelo
+     * 
+     * @param playerName Nome do jogador
+     * @return true se o jogador está no duelo, false caso contrário
+     */
+    public boolean hasPlayer(String playerName) {
+        return isInTeam1(playerName) || isInTeam2(playerName);
+    }
+    
+    /**
+     * Obtém o valor atual da contagem regressiva, com base no estado do duelo
+     * 
+     * @return Valor da contagem regressiva em segundos, ou -1 se não estiver em contagem
+     */
+    public int getCountdown() {
+        if (!isInCountdown() || getState() != DuelState.STARTING) {
+            return -1;
+        }
+        
+        // Por padrão, a contagem regressiva é de 5 segundos
+        int totalCountdown = 5;
+        
+        // Calcular quanto tempo se passou desde o início
+        long agora = System.currentTimeMillis();
+        long passado = (agora - getStartTime()) / 1000; // em segundos
+        
+        // Calcular tempo restante
+        int restante = totalCountdown - (int)passado;
+        
+        // Garantir que não seja negativo
+        return Math.max(0, restante);
     }
 } 

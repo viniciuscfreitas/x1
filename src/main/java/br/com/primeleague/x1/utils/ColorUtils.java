@@ -21,28 +21,10 @@ public class ColorUtils {
      * @return Texto colorido
      */
     public static String colorize(String text) {
-        if (text == null || text.isEmpty()) {
+        if (text == null) {
             return "";
         }
-        
-        // Substituir códigos hexadecimais por códigos de cor do Bukkit
-        Matcher matcher = HEX_PATTERN.matcher(text);
-        StringBuffer buffer = new StringBuffer();
-        
-        while (matcher.find()) {
-            String hex = matcher.group(1);
-            try {
-                matcher.appendReplacement(buffer, translateHexColorCodes(hex));
-            } catch (Exception e) {
-                // Ignorar erro
-            }
-        }
-        
-        matcher.appendTail(buffer);
-        String hexColored = buffer.toString();
-        
-        // Substituir códigos de cor do Bukkit (&)
-        return ChatColor.translateAlternateColorCodes('&', hexColored);
+        return ChatColor.translateAlternateColorCodes('&', text);
     }
     
     /**
@@ -80,14 +62,13 @@ public class ColorUtils {
     /**
      * Remove todas as cores de uma string
      * 
-     * @param text Texto com cores
+     * @param text Texto para remover as cores
      * @return Texto sem cores
      */
     public static String stripColor(String text) {
-        if (text == null || text.isEmpty()) {
+        if (text == null) {
             return "";
         }
-        
         return ChatColor.stripColor(text);
     }
     
@@ -192,5 +173,23 @@ public class ColorUtils {
         }
         
         return foundColor ? lastColor : "";
+    }
+    
+    /**
+     * Aplica cores em todas as strings de uma lista
+     * 
+     * @param lines Lista de strings para colorir
+     * @return Lista de strings coloridas
+     */
+    public static String[] colorize(String[] lines) {
+        if (lines == null) {
+            return new String[0];
+        }
+        
+        String[] colorized = new String[lines.length];
+        for (int i = 0; i < lines.length; i++) {
+            colorized[i] = colorize(lines[i]);
+        }
+        return colorized;
     }
 } 

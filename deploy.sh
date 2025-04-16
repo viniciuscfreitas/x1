@@ -7,7 +7,7 @@ SERVER_PORT="22"
 SERVER_USER="root"
 SERVER_PASSWORD="devprime"
 SERVER_PLUGIN_DIR="/home/minecraft/server/plugins/"
-PLUGIN_NAME="PrimeLeagueX1"  # nome do plugin
+PLUGIN_NAME="PrimeLeagueX1-1.0.0"  # nome do plugin
 
 # Verifica dependências
 if ! command -v mvn &> /dev/null; then echo "Instale o Maven."; exit 1; fi

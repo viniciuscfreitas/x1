@@ -61,8 +61,21 @@ public class StatsManager {
      * @param playerName Nome do jogador
      */
     public void addVictory(String playerName) {
-        PlayerStats stats = getPlayerStats(playerName);
-        stats.incrementVictories();
+        try {
+            System.out.println("[PrimeLeagueX1] Registrando vitória para " + playerName);
+            PlayerStats stats = getPlayerStats(playerName);
+            System.out.println("[PrimeLeagueX1] Estatísticas antes: V=" + stats.getVictories() + ", D=" + stats.getDefeats() + ", E=" + stats.getDraws());
+            stats.incrementVictories();
+            System.out.println("[PrimeLeagueX1] Estatísticas depois: V=" + stats.getVictories() + ", D=" + stats.getDefeats() + ", E=" + stats.getDraws());
+            // Salvar no arquivo individual do jogador também
+            plugin.getFileStorage().savePlayerStats(playerName, stats);
+            // Garantir que os dados sejam salvos globalmente
+            plugin.getFileStorage().saveData();
+            System.out.println("[PrimeLeagueX1] Vitória registrada com sucesso para " + playerName);
+        } catch (Exception e) {
+            System.out.println("[PrimeLeagueX1] Erro ao registrar vitória: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
     
     /**
@@ -71,8 +84,21 @@ public class StatsManager {
      * @param playerName Nome do jogador
      */
     public void addDefeat(String playerName) {
-        PlayerStats stats = getPlayerStats(playerName);
-        stats.incrementDefeats();
+        try {
+            System.out.println("[PrimeLeagueX1] Registrando derrota para " + playerName);
+            PlayerStats stats = getPlayerStats(playerName);
+            System.out.println("[PrimeLeagueX1] Estatísticas antes: V=" + stats.getVictories() + ", D=" + stats.getDefeats() + ", E=" + stats.getDraws());
+            stats.incrementDefeats();
+            System.out.println("[PrimeLeagueX1] Estatísticas depois: V=" + stats.getVictories() + ", D=" + stats.getDefeats() + ", E=" + stats.getDraws());
+            // Salvar no arquivo individual do jogador também
+            plugin.getFileStorage().savePlayerStats(playerName, stats);
+            // Garantir que os dados sejam salvos globalmente
+            plugin.getFileStorage().saveData();
+            System.out.println("[PrimeLeagueX1] Derrota registrada com sucesso para " + playerName);
+        } catch (Exception e) {
+            System.out.println("[PrimeLeagueX1] Erro ao registrar derrota: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
     
     /**
@@ -81,8 +107,48 @@ public class StatsManager {
      * @param playerName Nome do jogador
      */
     public void addDraw(String playerName) {
-        PlayerStats stats = getPlayerStats(playerName);
-        stats.incrementDraws();
+        try {
+            System.out.println("[PrimeLeagueX1] Registrando empate para " + playerName);
+            PlayerStats stats = getPlayerStats(playerName);
+            System.out.println("[PrimeLeagueX1] Estatísticas antes: V=" + stats.getVictories() + ", D=" + stats.getDefeats() + ", E=" + stats.getDraws());
+            stats.incrementDraws();
+            System.out.println("[PrimeLeagueX1] Estatísticas depois: V=" + stats.getVictories() + ", D=" + stats.getDefeats() + ", E=" + stats.getDraws());
+            // Salvar no arquivo individual do jogador também
+            plugin.getFileStorage().savePlayerStats(playerName, stats);
+            // Garantir que os dados sejam salvos globalmente
+            plugin.getFileStorage().saveData();
+            System.out.println("[PrimeLeagueX1] Empate registrado com sucesso para " + playerName);
+        } catch (Exception e) {
+            System.out.println("[PrimeLeagueX1] Erro ao registrar empate: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+    
+    /**
+     * Registra uma vitória para um jogador (alias para addVictory)
+     * 
+     * @param playerName Nome do jogador
+     */
+    public void addWin(String playerName) {
+        addVictory(playerName);
+    }
+    
+    /**
+     * Registra uma derrota para um jogador (alias para addDefeat)
+     * 
+     * @param playerName Nome do jogador
+     */
+    public void addLoss(String playerName) {
+        addDefeat(playerName);
+    }
+    
+    /**
+     * Registra um empate para um jogador (alias para addDraw)
+     * 
+     * @param playerName Nome do jogador
+     */
+    public void registerDraw(String playerName) {
+        addDraw(playerName);
     }
     
     /**
@@ -116,6 +182,18 @@ public class StatsManager {
     public void removeElo(String playerName, int amount) {
         PlayerStats stats = getPlayerStats(playerName);
         stats.removeElo(amount);
+    }
+    
+    /**
+     * Verifica se existem estatísticas para um jogador
+     * 
+     * @param playerName Nome do jogador
+     * @return true se o jogador tem estatísticas
+     */
+    public boolean playerExists(String playerName) {
+        PlayerStats stats = getPlayerStats(playerName);
+        // Se as estatísticas não forem nulas e o jogador já jogou pelo menos uma vez
+        return stats != null && (stats.getVictories() > 0 || stats.getDefeats() > 0 || stats.getDraws() > 0);
     }
     
     /**

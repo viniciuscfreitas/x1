@@ -1,102 +1,8 @@
-# Arquivo de mensagens do PrimeLeagueX1
-# Todas as mensagens usam códigos de cor com &
-
-# Prefixos e gerais
-plugin.prefix: "&6[PrimeLeagueX1]&r"
-erro.permissao: "&cVoce nao tem permissao para isso."
-erro.console: "&cApenas jogadores podem usar este comando."
-erro.jogador-offline: "&cJogador nao encontrado ou offline."
-
-# Scoreboard
-scoreboard.enabled: "&aScoreboard ativado."
-scoreboard.disabled: "&cScoreboard desativado."
-scoreboard.titulo: "&eDuelo X1"
-scoreboard.aguardando: "&eAguardando duelo"
-scoreboard.vitoria: "&aVitoria de: &b%player%"
-scoreboard.derrota: "&cDerrota de: &7%player%"
-scoreboard.dano: "&eDano Causado: &f%dano%"
-scoreboard.versus: "&fContra: &b%oponente%"
-
-# GUI
-gui.item-voltar: "&cVoltar"
-gui.desc-voltar: "&7Clique para voltar ao menu anterior."
-gui.item-cancelar: "&cCancelar"
-gui.desc-cancelar: "&7Clique para cancelar."
-gui.item-apostar: "&aApostar %valor% Dollars"
-gui.item-apostar-personalizado: "&bValor personalizado"
-gui.item-sem-aposta: "&7Desafiar sem aposta"
-
-# Title Messages
-x1.title.inicio: "&e3... 2... 1... LUTE!"
-x1.title.vitoria: "&aVitoria!"
-x1.title.derrota: "&cDerrota!"
-x1.title.empate: "&eEmpate!"
-
-# Sistema de duelo
-duelo.iniciado: "&aDuelo iniciado entre &b%jogador1% &ae &b%jogador2%&a!"
-duelo.cancelado: "&cO duelo foi cancelado."
-duelo.fora-limite: "&cVoce saiu da area do duelo!"
-duelo.pendente: "&eVoce ja tem um convite pendente."
-duelo.vitoria: "&aVoce venceu o duelo!"
-duelo.derrota: "&cVoce perdeu o duelo."
-duelo.stats.atualizado: "&aEstatisticas atualizadas com sucesso!"
-
-# Sistema de apostas
-aposta.valor-invalido: "&cValor invalido. Use apenas numeros."
-aposta.sem-dinheiro: "&cVoce nao tem dinheiro suficiente."
-aposta.enviada: "&aAposta enviada para %jogador% no valor de %valor% Dollars."
-aposta.aceita: "&aAposta aceita com sucesso!"
-aposta.cancelada: "&cAposta cancelada."
-
-# Mensagens de ranking
-ranking.top-header: "&6Top 10 Jogadores"
-ranking.linha: "&e%pos%. &b%jogador% &7- &a%vitorias% vitorias"
-
-# Mensagens de erro genericas
-erro.geral: "&cOcorreu um erro. Tente novamente."
-erro.duelo-existente: "&cVoce ja esta em um duelo."
-erro.jogador-ocupado: "&cO jogador esta ocupado."
-
-# Mensagens de rivalidade
-rival.placar: "&ePlacar: &b%vitorias1% &7- &b%vitorias2%"
-rival.broadcast: "&6Duelo entre rivais! &b%player1% &7vs &b%player2%"
-rival.revanche: "&6%vencedor% &econseguiu a revanche!"
-rival.mantida: "&6%vencedor% &emanteve a lideranca!"
-
-# Mensagens de configuracao
-config.reload: "&aConfiguracoes recarregadas com sucesso!"
-config.erro: "&cErro ao recarregar configuracoes."
-
-# Mensagens de arena
-arena.ocupada: "&cEsta arena ja esta em uso."
-arena.desocupada: "&aArena liberada."
-arena.nao-encontrada: "&cArena nao encontrada."
-
-# Mensagens de kit
-kit.fornecido: "&aKit de duelo fornecido com sucesso!"
-kit.inventario-cheio: "&cSeu inventario esta cheio!"
-
-# Mensagens de estatisticas
-stats.atualizadas: "&aSuas estatisticas foram atualizadas!"
-stats.visualizar: "&eEstatisticas de &b%jogador%&e:"
-stats.vitorias: "&aVitorias: &f%vitorias%"
-stats.derrotas: "&cDerrotas: &f%derrotas%"
-stats.empates: "&eEmpates: &f%empates%"
-stats.elo: "&bElo: &f%elo%"
-
-# Mensagens de comando
-cmd.ajuda: "&6=== Ajuda do PrimeLeagueX1 ===\n&e/x1 desafiar <jogador> &7- Desafiar um jogador\n&e/x1 stats [jogador] &7- Ver estatisticas\n&e/x1 top &7- Ver ranking\n&e/x1 kit &7- Receber kit de duelo"
-cmd.desafio-enviado: "&aDesafio enviado para &b%jogador%&a!"
-cmd.desafio-recebido: "&aVoce recebeu um desafio de &b%jogador%&a!"
-cmd.desafio-aceito: "&aDesafio aceito por &b%jogador%&a!"
-cmd.desafio-negado: "&cDesafio negado por &b%jogador%&c."
-cmd.desafio-expirado: "&cO desafio expirou."
-
 # Mensagens do PrimeLeagueX1
 # Todas as mensagens do plugin
 
 # O prefixo que será mostrado antes de cada mensagem
-prefixo: "&6[X1] &r"
+prefixo: "&6[&c*&6] &fX1 &6[&c*&6] &r"
 
 # Mensagens gerais
 geral:
@@ -123,7 +29,7 @@ duelo:
   # Mensagens de envio/recebimento
   desafio-enviado: "&a+ Você desafiou &f%player% &apara um &e%tipo%&a!"
   recebeu-desafio: "&a+ Você recebeu um desafio de &f%player% &apara um &e%tipo%&a!"
-  valor-aposta: "&a$ Valor da aposta: &f%valor% Dollars"
+  aposta-info: "&a$ Valor da aposta: &f%valor%"
   
   # Mensagens sobre expiração
   desafio-expirado: "&cSeu desafio para &f%player% &cexpirou!"
@@ -167,14 +73,13 @@ duelo:
   comando-bloqueado: "&c! Você não pode usar comandos durante um duelo!"
   item-bloqueado: "&c! Você não pode jogar itens durante um duelo!"
   dano-equipe: "&c! Você não pode atacar membros da sua equipe!"
-  inventario-nao-vazio: "&c! Seu inventário precisa estar vazio para usar o kit de duelo!"
-  oponente-inventario-nao-vazio: "&c! O jogador &f%player% &cprecisa esvaziar o inventário primeiro!"
   
   # Outras mensagens
   modo-espectador: "&a* Você está no modo espectador!"
   erro-uso-desafio: "&cUso correto: &f/x1 desafiar <jogador>"
   muito-longe-oponente: "&c! Você está se afastando muito do seu oponente!"
   teleporte-muito-longe: "&cVocê não pode se teleportar para longe do seu oponente!"
+  inventario-nao-vazio: "&c! Seu inventário precisa estar vazio para usar o kit de duelo!"
   aguarde-contagem: "&c! Aguarde a contagem regressiva terminar para atacar!"
   desafio-muito-longe: "&cVocê está muito longe do jogador para um duelo local!"
   

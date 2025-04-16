@@ -3,7 +3,7 @@ main: br.com.primeleague.x1.Main
 version: 1.0.0
 author: PrimeLeague
 description: Plugin de duelos 1v1 para servidores Bukkit
-softdepend: [Vault]
+softdepend: [Vault, WorldGuard]
 
 commands:
   x1:

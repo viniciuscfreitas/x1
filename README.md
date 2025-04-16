@@ -1,58 +1,72 @@
 # PrimeLeagueX1
 
-Plugin de duelos 1v1 para servidores Minecraft.
+Um plugin completo de duelos PvP para servidores Minecraft (Bukkit/Spigot).
 
-## Funcionalidades
+## Características
 
-- **Duelos com diferentes tipos:**
-  - Duelos na arena
-  - Duelos locais (no mesmo lugar)
-  - Duelos com kit pré-definido ou com itens próprios
+- Sistema de duelos PvP individuais (X1) e em equipes (2v2, 3v3, etc.)
+- Interface gráfica intuitiva para gerenciar desafios
+- Sistema de arenas configuráveis
+- Sistema de estatísticas com rank de jogadores
+- Sistema de apostas em duelos
+- Suporte a kits de duelo configuráveis
+- Integração com WorldGuard para proteção de arenas
+- Integração com Vault para economia
+- Sistema de equipes com prefixos e cores configuráveis
+- Efeitos visuais e sonoros durante duelos
+- Sistema de logs de duelos com registro detalhado
 
-- **Sistema de Apostas:**
-  - Suporte para apostas em duelos utilizando economia do servidor
+## Novos Recursos
 
-- **Sistema de Arenas:**
-  - Configure posições para duelos em arenas
-  - Teleporte automático para arenas
-  - Retorno automático ao local original após duelo
+### Efeitos Visuais e Sonoros
+- Títulos e mensagens durante a contagem regressiva
+- Efeitos sonoros para início, vitória, derrota e empate em duelos
+- Efeitos visuais (fogos de artifício) para celebrar vitórias
+- Sistema de notificações aprimorado com sons
 
-- **Interface Gráfica (GUI):**
-  - Menus interativos para enviar desafios
-  - Visualização de estatísticas
-
-- **Sistema de Times:**
-  - Crie e gerencie times
-  - Desafie outros times
+### Configuração Melhorada
+- Arquivo de configuração reorganizado e documentado
+- Mensagens customizáveis com prefixo visual atraente
+- Sons configuráveis para vários eventos
 
 ## Comandos
 
-- `/x1 desafiar <jogador> [tipo]` - Desafia um jogador para duelo
-- `/x1 aceitar <jogador>` - Aceita um desafio
-- `/x1 rejeitar <jogador>` - Rejeita um desafio
-- `/x1 arena set1` - Define a posição 1 da arena
-- `/x1 arena set2` - Define a posição 2 da arena
-- `/x1 arena setespectador` - Define o local de espectador
-- `/x1 menu` - Abre o menu principal
+- `/x1` - Abre o menu principal de duelos
+- `/x1 desafiar <jogador>` - Desafia um jogador para duelo
+- `/x1 aceitar <jogador>` - Aceita um desafio pendente
+- `/x1 rejeitar <jogador>` - Rejeita um desafio pendente
+- `/x1 stats [jogador]` - Mostra estatísticas do jogador
+- `/x1 top` - Mostra o ranking de melhores jogadores
+- `/x1 arena <set|tp> <nome>` - Gerencia arenas (requer permissão)
+- `/x1 admin` - Comandos administrativos (requer permissão)
 
 ## Permissões
 
-- `primeleaguex1.admin` - Acesso a comandos administrativos
-- `primeleaguex1.duel` - Permissão para duelos
-- `primeleaguex1.arena` - Permissão para configurar arena
-- `primeleaguex1.spectate` - Permissão para assistir duelos
+- `primeleaguex1.use` - Permite usar o plugin
+- `primeleaguex1.admin` - Permite usar comandos administrativos
+- `primeleaguex1.arena` - Permite gerenciar arenas
+- `primeleaguex1.team` - Permite criar e gerenciar equipes
 
-## Melhorias Recentes
+## Instalação
 
-- Correção de problemas de visibilidade entre jogadores
-- Melhorias no sistema de teleporte para a arena
-- Retorno automático à posição original após o duelo
-- Verificações adicionais para garantir que os jogadores se vejam durante o duelo
-- Sistema de times melhorado
+1. Coloque o arquivo .jar na pasta plugins do seu servidor
+2. Reinicie o servidor
+3. Configure as arenas usando `/x1 arena set <nome>`
+4. Personalize as configurações no arquivo config.yml
+
+## Dependências
+
+- Vault (opcional, para economia)
+- WorldGuard (opcional, para proteção de arenas)
+- PrimeLeagueElo (opcional, para sistema de Elo)
 
 ## Configuração
 
-As configurações do plugin podem ser encontradas nos arquivos:
-- `config.yml` - Configurações gerais
+O plugin inclui arquivos de configuração detalhados:
+
+- `config.yml` - Configurações gerais, arenas, kits, sons
 - `messages.yml` - Mensagens customizáveis
-- `kit.yml` - Configuração do kit padrão 
+
+## Contato e Suporte
+
+Para suporte ou sugestões, entre em contato através do Discord PrimeLeague. 

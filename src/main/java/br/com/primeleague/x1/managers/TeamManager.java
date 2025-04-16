@@ -18,6 +18,11 @@ public class TeamManager {
     private final Map<String, String> playerTeams; // playerName -> teamName
     private final Map<String, String> teamLeaders; // teamName -> leaderName
     
+    // Sistema de convites para equipes
+    private final Map<String, String> teamInvites; // invitedPlayer -> teamName
+    private final Map<String, Long> inviteTimestamps; // invitedPlayer -> timestamp
+    private final int INVITE_TIMEOUT_SECONDS = 60; // Tempo limite para o convite expirar
+    
     /**
      * Construtor
      * 
@@ -27,6 +32,8 @@ public class TeamManager {
         this.plugin = plugin;
         this.playerTeams = new HashMap<>();
         this.teamLeaders = new HashMap<>();
+        this.teamInvites = new HashMap<>();
+        this.inviteTimestamps = new HashMap<>();
     }
     
     /**
@@ -261,5 +268,197 @@ public class TeamManager {
         }
         
         return true;
+    }
+
+    /**
+     * Obtém o líder da equipe de um jogador
+     * 
+     * @param playerName Nome do jogador
+     * @return Nome do líder ou null se o jogador não estiver em uma equipe
+     */
+    public String getTeamLeaderByPlayer(String playerName) {
+        String teamName = getPlayerTeam(playerName);
+        if (teamName == null) {
+            return null;
+        }
+        return getTeamLeader(teamName);
+    }
+    
+    /**
+     * Convida um jogador para uma equipe
+     * 
+     * @param leaderName Nome do líder da equipe
+     * @param playerName Nome do jogador a ser convidado
+     * @return true se o convite foi enviado com sucesso
+     */
+    public boolean invitePlayerToTeam(String leaderName, String playerName) {
+        // Verificar se o líder tem uma equipe
+        if (!isTeamLeader(leaderName)) {
+            return false;
+        }
+        
+        // Verificar se o jogador já está em uma equipe
+        if (isInTeam(playerName)) {
+            return false;
+        }
+        
+        // Verificar se o jogador já tem um convite pendente
+        if (hasInvite(playerName)) {
+            return false;
+        }
+        
+        // Obter o nome da equipe do líder
+        String teamName = "";
+        for (Map.Entry<String, String> entry : teamLeaders.entrySet()) {
+            if (entry.getValue().equals(leaderName)) {
+                teamName = entry.getKey();
+                break;
+            }
+        }
+        
+        // Verificar se a equipe tem menos de 3 membros (incluindo o líder)
+        int teamSize = 0;
+        for (String team : playerTeams.values()) {
+            if (team.equals(teamName)) {
+                teamSize++;
+            }
+        }
+        
+        if (teamSize >= 3) {
+            return false; // Equipe cheia
+        }
+        
+        // Enviar o convite
+        teamInvites.put(playerName, teamName);
+        inviteTimestamps.put(playerName, System.currentTimeMillis());
+        
+        // Agendar expiração do convite
+        plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
+            if (teamInvites.containsKey(playerName) &&
+                    inviteTimestamps.get(playerName) + (INVITE_TIMEOUT_SECONDS * 1000) <= System.currentTimeMillis()) {
+                
+                teamInvites.remove(playerName);
+                inviteTimestamps.remove(playerName);
+                
+                // Notificar jogadores
+                Player invitedPlayer = plugin.getServer().getPlayerExact(playerName);
+                if (invitedPlayer != null && invitedPlayer.isOnline()) {
+                    plugin.getMessageManager().sendMessage(invitedPlayer, "equipes.convite-expirado");
+                }
+                
+                Player leader = plugin.getServer().getPlayerExact(leaderName);
+                if (leader != null && leader.isOnline()) {
+                    Map<String, String> placeholders = new HashMap<>();
+                    placeholders.put("jogador", playerName);
+                    plugin.getMessageManager().sendMessage(leader, "equipes.convite-expirado-lider", placeholders);
+                }
+            }
+        }, INVITE_TIMEOUT_SECONDS * 20L);
+        
+        return true;
+    }
+    
+    /**
+     * Verifica se um jogador tem um convite pendente
+     * 
+     * @param playerName Nome do jogador
+     * @return true se o jogador tem um convite pendente
+     */
+    public boolean hasInvite(String playerName) {
+        return teamInvites.containsKey(playerName);
+    }
+    
+    /**
+     * Obtém o nome da equipe que convidou um jogador
+     * 
+     * @param playerName Nome do jogador
+     * @return Nome da equipe ou null se não houver convite
+     */
+    public String getInvitingTeam(String playerName) {
+        return teamInvites.get(playerName);
+    }
+    
+    /**
+     * Obtém o líder de uma equipe que convidou um jogador
+     * 
+     * @param playerName Nome do jogador
+     * @return Nome do líder ou null se não houver convite
+     */
+    public String getInvitingLeader(String playerName) {
+        String teamName = teamInvites.get(playerName);
+        if (teamName == null) {
+            return null;
+        }
+        
+        return teamLeaders.get(teamName);
+    }
+    
+    /**
+     * Aceita um convite para entrar em uma equipe
+     * 
+     * @param playerName Nome do jogador
+     * @return true se o convite foi aceito com sucesso
+     */
+    public boolean acceptInvite(String playerName) {
+        // Verificar se o jogador tem um convite
+        if (!hasInvite(playerName)) {
+            return false;
+        }
+        
+        // Obter o nome da equipe
+        String teamName = teamInvites.get(playerName);
+        
+        // Remover o convite
+        teamInvites.remove(playerName);
+        inviteTimestamps.remove(playerName);
+        
+        // Adicionar o jogador à equipe
+        playerTeams.put(playerName, teamName);
+        
+        return true;
+    }
+    
+    /**
+     * Recusa um convite para entrar em uma equipe
+     * 
+     * @param playerName Nome do jogador
+     * @return true se o convite foi recusado com sucesso
+     */
+    public boolean rejectInvite(String playerName) {
+        // Verificar se o jogador tem um convite
+        if (!hasInvite(playerName)) {
+            return false;
+        }
+        
+        // Remover o convite
+        teamInvites.remove(playerName);
+        inviteTimestamps.remove(playerName);
+        
+        return true;
+    }
+    
+    /**
+     * Obtém o tamanho de uma equipe
+     * 
+     * @param teamName Nome da equipe
+     * @return Número de membros na equipe
+     */
+    public int getTeamSize(String teamName) {
+        int count = 0;
+        for (String team : playerTeams.values()) {
+            if (team.equals(teamName)) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    /**
+     * Obtém todos os líderes de equipe
+     * 
+     * @return Lista com os nomes de todos os líderes de equipe
+     */
+    public List<String> getAllTeamLeaders() {
+        return new ArrayList<>(teamLeaders.values());
     }
 } 
